@@ -1,4 +1,4 @@
-package hungerz.com.hungerz.gps;
+package hungerz.com.hungerz;
 
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
@@ -11,9 +11,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import hungerz.com.hungerz.R;
-import hungerz.com.hungerz.gps.GPSTracker;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GPSTracker.Loc {
 
