@@ -4,4 +4,9 @@
     <string name="title_activity_maps">Map</string>
     <string name="username">User name</string>
     <string name="password">Password</string>
+    <string name="donor">Donor</string>
+    <string name="user">User</string>
+    <string name="chose_category">Chose Category</string>
+    <string name="chose_action">Chose Action</string>
+    <string name="add_location">Add Location</string>
 </resources>

@@ -1,4 +1,4 @@
-package hungerz.com.hungerz;
+package hungerz.com.hungerz.gps;
 
 import android.Manifest;
 import android.app.Service;

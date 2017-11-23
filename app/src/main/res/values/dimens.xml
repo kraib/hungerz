@@ -1,3 +1,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="horizontal_margin">20sp</dimen>
+    <dimen name="activity_horizontal_margin">20sp</dimen>
+    <dimen name="nav_header_height">250sp</dimen>
+    <dimen name="activity_vertical_margin">20sp</dimen>
 </resources>

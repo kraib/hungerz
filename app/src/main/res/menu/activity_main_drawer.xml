@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Core Menu">
+    <menu>
+        <item
+            android:id="@+id/nav_add"
+            android:icon="@android:drawable/ic_menu_add"
+            android:title="Add Food" />
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@android:drawable/ic_search_category_default"
+            android:title="Search" />
+    </menu>
+    </item>
+    <item android:title="Others">
+        <menu>
+            <item
+                android:id="@+id/nav_exit"
+                android:icon="@android:drawable/ic_lock_power_off"
+                android:title="Exit" />
+        </menu>
+    </item>
+
+</menu>
