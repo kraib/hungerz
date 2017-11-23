@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GPSTracker.Loc, View.OnClickListener {
@@ -37,7 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     DatabaseReference databaseReference;
     Location currentLocation = null;
 
-    ArrayList<Map<String, Double>> markersList;
+    List<HashMap<String, String>> markersList;
 
 
     @Override
@@ -64,19 +65,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if(dataSnapshot.exists()) {
 
                     for (DataSnapshot data : dataSnapshot.getChildren()){
-                        Map<String,Double> mark = new HashMap<>();
-                        mark.put("lat",Double.valueOf(data.child("lat").getValue().toString()));
-                        mark.put("long",Double.valueOf(data.child("long").getValue().toString()));
+                        HashMap<String, String> mark = new HashMap<>();
+                        mark.put("lat",data.child("lat").getValue().toString());
+                        mark.put("long",data.child("long").getValue().toString());
 //                        Toast.makeText(getBaseContext(), data.getValue().toString(), Toast.LENGTH_SHORT).show();
                         markersList.add(mark);
                     }
 
 
-                    for(Map<String,Double> mm : markersList){
-                        Double lat = mm.get("lat");
-                        Double lng = mm.get("long");
-                        addMyMakers(lat,lng);
+                    for(Map<String,String> mm : markersList){
+//                        Double lat = mm.get("lat");
+//                        Double lng = mm.get("long");
+//                        addMyMakers(lat,lng);
                     }
+
+                    ShowNearbyPlaces(markersList);
 
 
                 }
@@ -101,6 +104,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 //        mMap.addMarker(markerOptions);
 
+    }
+
+
+    private void ShowNearbyPlaces(List<HashMap<String, String>> nearbyPlacesList) {
+
+        mMap.clear();
+        for (int i = 0; i < nearbyPlacesList.size(); i++) {
+            MarkerOptions markerOptions = new MarkerOptions();
+            HashMap<String, String> googlePlace = nearbyPlacesList.get(i);
+
+            double lat = Double.parseDouble(googlePlace.get("lat"));
+            double lng = Double.parseDouble(googlePlace.get("long"));
+            LatLng latLng = new LatLng(lat, lng);
+            markerOptions.position(latLng);
+            mMap.addMarker(markerOptions);
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+
+            Toast.makeText(getBaseContext(), markerOptions.toString(), Toast.LENGTH_SHORT).show();
+            //move map camera
+//            gooMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//            gooMap.animateCamera(CameraUpdateFactory.zoomTo(14));
+        }
     }
 
     @Override
