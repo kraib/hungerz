@@ -1,9 +1,12 @@
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
+
     xmlns:tools="http://schemas.android.com/tools"
     >
+
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -12,6 +15,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="hungerz.com.hungerz.MapsActivity" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        android:paddingBottom="20dp"
+        android:layout_height="wrap_content">
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_search_white_24dp"
+            android:id="@+id/search"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <EditText
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:id="@+id/userName"
+        android:layout_height="wrap_content" />
+    <Button
+        android:layout_alignParentRight="true"
+        android:text="submit user name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/submit"/>
 
-</LinearLayout>
+</RelativeLayout>
 
