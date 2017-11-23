@@ -12,7 +12,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="120dp"
-        android:background="#fff"
+        android:background="@drawable/sq_white"
         android:elevation="4dp"
         android:orientation="vertical"
         android:padding="20dp">
@@ -54,7 +54,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="22dp"
-                android:background="#d67601"
+                android:background="@drawable/button"
                 android:text="Sign in"
                 android:textAllCaps="false"
                 android:textColor="#fff"
