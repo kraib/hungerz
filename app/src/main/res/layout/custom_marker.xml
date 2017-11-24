@@ -12,5 +12,5 @@
         android:layout_height="48dp"
         android:layout_gravity="center_horizontal"
         android:contentDescription="@null"
-        android:src="@drawable/salad" />
+        android:src="@drawable/icon" />
 </FrameLayout>
