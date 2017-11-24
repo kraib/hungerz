@@ -12,4 +12,9 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="login">Login</string>
+    <string name="home_page">Home Page</string>
+    <string name="hunger_zero_app">Hunder Zero App v1</string>
+    <string name="provide_your_username_and_password">Provide Your Username and Password</string>
+    <string name="login_here">Login Here</string>
 </resources>

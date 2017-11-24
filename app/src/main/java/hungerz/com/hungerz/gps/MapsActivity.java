@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import hungerz.com.hungerz.LoginActivity;
 import hungerz.com.hungerz.R;
 import hungerz.com.hungerz.gps.GPSTracker;
 
@@ -172,7 +173,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Handle navigation view item clicks here.
         int id = item.getItemId();
          if (id == R.id.nav_add) {
-             showDialog();
+             startActivity(new Intent(context, LoginActivity.class));
         } else if (id == R.id.nav_search) {
 
         }  else if (id == R.id.nav_exit) {
