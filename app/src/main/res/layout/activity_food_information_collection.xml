@@ -32,6 +32,7 @@
             <EditText
                 android:id="@+id/food_type"
                 android:inputType="text"
+                android:hint="Brief description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -46,6 +47,7 @@
                 android:layout_height="wrap_content" />
             <EditText
                 android:inputType="number"
+                android:hint="number"
                 android:id="@+id/no_of_people"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -61,6 +63,7 @@
                 android:layout_height="wrap_content" />
             <EditText
                 android:inputType="text"
+                android:hint="text"
                 android:maxLines="2"
                 android:layout_width="match_parent"
                 android:id="@+id/time_limit"
@@ -105,6 +108,14 @@
                 android:textAllCaps="false"
                 android:textColor="#fff"
                 android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="skip"
+            android:id="@+id/skip"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </RelativeLayout>

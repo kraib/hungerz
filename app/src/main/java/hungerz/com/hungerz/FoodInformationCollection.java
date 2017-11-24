@@ -18,15 +18,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import hungerz.com.hungerz.gps.GPSTracker;
 import hungerz.com.hungerz.models.FoodInfoModel;
 
 public class FoodInformationCollection extends AppCompatActivity implements View.OnClickListener, GPSTracker.Loc {
 
     protected Button submit;
+    protected TextView skip;
     private TextView name;
     private TextView latitudeView;
     private TextView longitudeView;
@@ -49,7 +47,7 @@ public class FoodInformationCollection extends AppCompatActivity implements View
         userReference = database.getReference("users");
         userReference.keepSynced(true);
 
-         userData = userReference.child(firebaseAuth.getUid());
+        userData = userReference.child(firebaseAuth.getUid());
 
         userData.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -77,6 +75,8 @@ public class FoodInformationCollection extends AppCompatActivity implements View
         foodType = (EditText) findViewById(R.id.food_type);
         noOfPeople = (EditText) findViewById(R.id.no_of_people);
         timeLimit = (EditText) findViewById(R.id.time_limit);
+        skip = (TextView) findViewById(R.id.skip);
+        skip.setOnClickListener(FoodInformationCollection.this);
     }
 
     @Override
@@ -84,34 +84,34 @@ public class FoodInformationCollection extends AppCompatActivity implements View
         if (view.getId() == R.id.submit) {
 
             String foodTypeString = foodType.getText().toString();
-          String  noOfPeopleString = noOfPeople.getText().toString();
-          String timeLimitString = timeLimit.getText().toString();
-           if(!TextUtils.isEmpty(foodTypeString) && !TextUtils.isEmpty(noOfPeopleString) && !TextUtils.isEmpty(timeLimitString)
-                   ){
-               FoodInfoModel foodInfoModel = new FoodInfoModel();
-               foodInfoModel.setFoodType(foodTypeString);
-               foodInfoModel.setNumberOfPeople(noOfPeopleString);
-               foodInfoModel.setTimeLimit(timeLimitString);
-               foodInfoModel.setWish("wish");
-               foodInfoModel.setName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-               foodInfoModel.setLatitude(currentLocation.getLatitude() + "");
-               foodInfoModel.setLongitude(currentLocation.getLongitude() + "");
-              DatabaseReference ref = userData.child("events").push();
-                      ref.setValue(foodInfoModel, new DatabaseReference.CompletionListener() {
-                   @Override
-                   public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                       if(databaseError==null){
-                           Intent intent = new Intent(getBaseContext(), MapsWithSideNav.class);
-                           startActivity(intent);
-                       }else {
-                           Toast.makeText(FoodInformationCollection.this, "Failed", Toast.LENGTH_SHORT).show();
-                       }
-                   }
-               });
+            String noOfPeopleString = noOfPeople.getText().toString();
+            String timeLimitString = timeLimit.getText().toString();
+            if (!TextUtils.isEmpty(foodTypeString) && !TextUtils.isEmpty(noOfPeopleString) && !TextUtils.isEmpty(timeLimitString)
+                    ) {
+                FoodInfoModel foodInfoModel = new FoodInfoModel();
+                foodInfoModel.setFoodType(foodTypeString);
+                foodInfoModel.setNumberOfPeople(noOfPeopleString);
+                foodInfoModel.setTimeLimit(timeLimitString);
+                foodInfoModel.setWish("wish");
+                foodInfoModel.setName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                foodInfoModel.setLatitude(currentLocation.getLatitude() + "");
+                foodInfoModel.setLongitude(currentLocation.getLongitude() + "");
+                DatabaseReference ref = userData.child("events").push();
+                ref.setValue(foodInfoModel, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        if (databaseError == null) {
+                            Intent intent = new Intent(getBaseContext(), MapsWithSideNav.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(FoodInformationCollection.this, "Failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
-           }else{
-               Toast.makeText(this, "All fields Required", Toast.LENGTH_SHORT).show();
-           }
+            } else {
+                Toast.makeText(this, "All fields Required", Toast.LENGTH_SHORT).show();
+            }
 
 //
 //            Map<String, String> location = new HashMap<>();
@@ -121,6 +121,9 @@ public class FoodInformationCollection extends AppCompatActivity implements View
 //            userReference.child(firebaseAuth.getUid()).child("location").setValue(location);
 
 
+        } else if (view.getId() == R.id.skip) {
+            Intent intent = new Intent(getBaseContext(), MapsWithSideNav.class);
+            startActivity(intent);
         }
     }
 
