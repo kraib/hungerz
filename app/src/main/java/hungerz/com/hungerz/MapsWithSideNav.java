@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,6 +26,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -90,7 +94,8 @@ public class MapsWithSideNav extends AppCompatActivity
             double lng = Double.parseDouble(listData.getLongitude());
             LatLng latLng = new LatLng(lat, lng);
             markerOptions.position(latLng);
-            mMap.addMarker(markerOptions);
+            markerOptions.title(listData.getFoodType());
+            mMap.addMarker(markerOptions).setTag(listData);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
         }
@@ -117,6 +122,16 @@ public class MapsWithSideNav extends AppCompatActivity
         if (!markersList.isEmpty()){
             addMyMakers(markersList);
         }
+
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+            @Override
+            public void onInfoWindowClick(Marker arg0) {
+                FoodInfoModel model = (FoodInfoModel) arg0.getTag();
+                showDialog(model);
+            }
+        });
 
         userReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -212,5 +227,35 @@ public class MapsWithSideNav extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    private void showDialog(FoodInfoModel foodInfoModel){
+        try {
+            final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            LayoutInflater inflater = getLayoutInflater();
+            View view = inflater.inflate(R.layout.search_dialog, null);
+            // this is set the view from XML inside AlertDialog
+            alert.setView(view);
+            TextView input_name = (TextView)view.findViewById(R.id.name);
+            TextView type = (TextView)view.findViewById(R.id.food_type);
+            TextView time = (TextView)view.findViewById(R.id.time_limit);
+
+            input_name.setText(foodInfoModel.getName());
+            type.setText("Giving out "+foodInfoModel.getFoodType());
+            time.setText("Stop time "+foodInfoModel.getTimeLimit());
+
+            alert.setCancelable(true);
+
+            final AlertDialog dialog = alert.create();
+            dialog.show();
+            dialog.setCanceledOnTouchOutside(true);
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }

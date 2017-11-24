@@ -96,6 +96,7 @@ public class FoodInformationCollection extends AppCompatActivity implements View
                foodInfoModel.setNumberOfPeople(noOfPeopleString);
                foodInfoModel.setTimeLimit(timeLimitString);
                foodInfoModel.setWish(wishString);
+               foodInfoModel.setName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                foodInfoModel.setLatitude(currentLocation.getLatitude() + "");
                foodInfoModel.setLongitude(currentLocation.getLongitude() + "");
               DatabaseReference ref = userData.child("events").push();

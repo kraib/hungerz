@@ -56,12 +56,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         if (view.getId() == R.id.sign_in) {
 
-            if (mAuth.getCurrentUser()== null){
 
-            }else {
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
-            }
         }
     }
 
@@ -94,7 +91,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -108,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Map<String,String> userData = new HashMap<>();
+                            Map<String,Object> userData = new HashMap<>();
                             userData.put("userId", user.getUid());
                             try {
                                 userData.put("name", user.getDisplayName());
@@ -126,19 +123,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                             }
 
-                            userReference.child(user.getUid()).setValue(userData, new DatabaseReference.CompletionListener() {
-                                @Override
-                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                    if(databaseError==null){
-                                        Intent intent = new Intent(getBaseContext(), FoodInformationCollection.class);
-                                        startActivity(intent);
-                                        Toast.makeText(getBaseContext(),  "sucess",
-                                                Toast.LENGTH_SHORT).show();
-                                    }else {
-                                        Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
+                            userReference.child(user.getUid()).updateChildren(userData);
+                            Intent intent = new Intent(getBaseContext(), FoodInformationCollection.class);
+                            startActivity(intent);
 
 
                         } else {

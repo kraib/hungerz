@@ -7,11 +7,15 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -72,6 +76,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+    private void showDialog(FoodInfoModel foodInfoModel){
+        try {
+            final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            LayoutInflater inflater = getLayoutInflater();
+            View view = inflater.inflate(R.layout.search_dialog, null);
+            // this is set the view from XML inside AlertDialog
+            alert.setView(view);
+            TextView input_name = (TextView)view.findViewById(R.id.name);
+            TextView type = (TextView)view.findViewById(R.id.food_type);
+            TextView time = (TextView)view.findViewById(R.id.time_limit);
+
+            input_name.setText(foodInfoModel.getName());
+            type.setText("Giving out"+foodInfoModel.getFoodType());
+            time.setText("Stop time"+foodInfoModel.getTimeLimit());
+
+            alert.setCancelable(true);
+
+            final AlertDialog dialog = alert.create();
+            dialog.show();
+            dialog.setCanceledOnTouchOutside(true);
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
     // Adds markers to the mMap
     private void addMyMakers(List<FoodInfoModel> markersListData) {
         mMap.clear();
@@ -82,7 +116,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng latLng = new LatLng(lat, lng);
             markerOptions.position(latLng);
             markerOptions.title(listData.getFoodType());
-            markerOptions.snippet(listData.getFoodType());
             mMap.addMarker(markerOptions).setTag(listData);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
@@ -116,7 +149,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onInfoWindowClick(Marker arg0) {
                 FoodInfoModel model = (FoodInfoModel) arg0.getTag();
-                Toast.makeText(gpsTracker, model.getFoodType(), Toast.LENGTH_SHORT).show();
+                showDialog(model);
             }
         });
         userReference.addValueEventListener(new ValueEventListener() {

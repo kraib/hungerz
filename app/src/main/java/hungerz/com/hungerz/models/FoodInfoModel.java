@@ -5,12 +5,21 @@ package hungerz.com.hungerz.models;
  */
 
 public class FoodInfoModel {
+    String name;
     String FoodType;
     String NumberOfPeople;
     String TimeLimit;
     String Wish;
     String latitude;
     String longitude;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getFoodType() {
         return FoodType;

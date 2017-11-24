@@ -100,8 +100,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             View view = inflater.inflate(R.layout.search_dialog, null);
             // this is set the view from XML inside AlertDialog
             alert.setView(view);
-            ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-            TextView input_name = (TextView)view.findViewById(R.id.input_name);
             // disallow cancel of AlertDialog on click of back button and outside touch
             alert.setCancelable(false);
 
@@ -109,12 +107,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             dialog.show();
             dialog.setCanceledOnTouchOutside(false);
 
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                }
-            });
 
         }catch (Exception e){
             e.printStackTrace();
