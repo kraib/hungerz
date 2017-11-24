@@ -118,7 +118,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng latLng = new LatLng(lat, lng);
             markerOptions.position(latLng);
             markerOptions.title(listData.getFoodType());
-            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView()));
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+//            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView()));
             mMap.addMarker(markerOptions).setTag(listData);
             mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
         }

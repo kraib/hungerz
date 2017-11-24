@@ -97,6 +97,7 @@ public class MapsWithSideNav extends AppCompatActivity
             markerOptions.position(latLng);
             markerOptions.title(listData.getFoodType());
             mMap.addMarker(markerOptions).setTag(listData);
+
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
         }
