@@ -1,6 +1,12 @@
 package hungerz.com.hungerz;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -69,10 +75,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         userReference = database.getReference("users");
         userReference.keepSynced(true);
 
-
-
-
-
     }
 
 
@@ -116,10 +118,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng latLng = new LatLng(lat, lng);
             markerOptions.position(latLng);
             markerOptions.title(listData.getFoodType());
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView()));
             mMap.addMarker(markerOptions).setTag(listData);
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
         }
+    }
+    private Bitmap getMarkerBitmapFromView() {
+
+        Bitmap returnedBitmap = null;
+        try {
+            View customMarkerView = ((LayoutInflater) (this).getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
+
+            customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
+            customMarkerView.buildDrawingCache();
+            returnedBitmap = Bitmap.createBitmap(customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight(),
+                    Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(returnedBitmap);
+            canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN);
+            Drawable drawable = customMarkerView.getBackground();
+            if (drawable != null)
+                drawable.draw(canvas);
+            customMarkerView.draw(canvas);
+        }catch (NullPointerException e){
+        }
+
+        return returnedBitmap;
     }
 
     @Override
