@@ -1,5 +1,6 @@
 package hungerz.com.hungerz;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -142,7 +143,6 @@ public class MapsWithSideNav extends AppCompatActivity
                         for (DataSnapshot event: events.getChildren()){
                             FoodInfoModel model = event.getValue(FoodInfoModel.class);
 
-                            Toast.makeText(getBaseContext(), model.getFoodType(), Toast.LENGTH_SHORT).show();
                             HashMap<String, String> mark = new HashMap<>();
                             mark.put("lat", model.getLatitude());
                             mark.put("long", model.getLongitude());
@@ -151,7 +151,6 @@ public class MapsWithSideNav extends AppCompatActivity
                     }
                     addMyMakers(markersList);
 
-                    Toast.makeText(getBaseContext(), markersList.size()+"", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -220,6 +219,8 @@ public class MapsWithSideNav extends AppCompatActivity
 
         if (id == R.id.donations) {
             // Handle the camera action
+            Intent intent = new Intent(getBaseContext(),DonationsList.class);
+            startActivity(intent);
         } else if (id == R.id.profile) {
 
         }
