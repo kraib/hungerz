@@ -9,4 +9,7 @@
     <string name="chose_category">Chose Category</string>
     <string name="chose_action">Chose Action</string>
     <string name="add_location">Add Location</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
