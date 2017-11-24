@@ -33,7 +33,6 @@ public class FoodInformationCollection extends AppCompatActivity implements View
     private EditText foodType;
     private EditText noOfPeople;
     private EditText timeLimit;
-    private EditText wish;
     FirebaseAuth firebaseAuth;
     private DatabaseReference userReference;
     Location currentLocation = null;
@@ -78,7 +77,6 @@ public class FoodInformationCollection extends AppCompatActivity implements View
         foodType = (EditText) findViewById(R.id.food_type);
         noOfPeople = (EditText) findViewById(R.id.no_of_people);
         timeLimit = (EditText) findViewById(R.id.time_limit);
-        wish = (EditText) findViewById(R.id.wish);
     }
 
     @Override
@@ -88,14 +86,13 @@ public class FoodInformationCollection extends AppCompatActivity implements View
             String foodTypeString = foodType.getText().toString();
           String  noOfPeopleString = noOfPeople.getText().toString();
           String timeLimitString = timeLimit.getText().toString();
-          String wishString = wish.getText().toString();
            if(!TextUtils.isEmpty(foodTypeString) && !TextUtils.isEmpty(noOfPeopleString) && !TextUtils.isEmpty(timeLimitString)
-                   && !TextUtils.isEmpty(wishString)){
+                   ){
                FoodInfoModel foodInfoModel = new FoodInfoModel();
                foodInfoModel.setFoodType(foodTypeString);
                foodInfoModel.setNumberOfPeople(noOfPeopleString);
                foodInfoModel.setTimeLimit(timeLimitString);
-               foodInfoModel.setWish(wishString);
+               foodInfoModel.setWish("wish");
                foodInfoModel.setName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
                foodInfoModel.setLatitude(currentLocation.getLatitude() + "");
                foodInfoModel.setLongitude(currentLocation.getLongitude() + "");

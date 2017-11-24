@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -23,7 +23,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -33,6 +32,7 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     protected Button signIn;
+    protected ProgressBar progress;
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -46,30 +46,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initView();
         mAuth = FirebaseAuth.getInstance();
         configureSignIn();
+        progress.setVisibility(View.INVISIBLE);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-         userReference = database.getReference("users");
+        userReference = database.getReference("users");
         userReference.keepSynced(true);
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.sign_in) {
-
-
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-                startActivityForResult(signInIntent, RC_SIGN_IN);
+            progress.setVisibility(View.VISIBLE);
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+            startActivityForResult(signInIntent, RC_SIGN_IN);
         }
     }
 
     private void initView() {
         signIn = (Button) findViewById(R.id.sign_in);
         signIn.setOnClickListener(LoginActivity.this);
+        progress = (ProgressBar) findViewById(R.id.progress);
     }
 
 
-
-    public void configureSignIn(){
+    public void configureSignIn() {
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getBaseContext().getResources().getString(R.string.web_client_id2))
                 .requestEmail()
@@ -92,6 +92,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                progress.setVisibility(View.INVISIBLE);
             }
         }
     }
@@ -105,11 +106,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Map<String,Object> userData = new HashMap<>();
+                            Map<String, Object> userData = new HashMap<>();
                             userData.put("userId", user.getUid());
                             try {
                                 userData.put("name", user.getDisplayName());
                             } catch (Exception e) {
+
 
                             }
                             try {
@@ -126,10 +128,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             userReference.child(user.getUid()).updateChildren(userData);
                             Intent intent = new Intent(getBaseContext(), FoodInformationCollection.class);
                             startActivity(intent);
+                            progress.setVisibility(View.INVISIBLE);
 
 
                         } else {
                             // If sign in fails, display a message to the user.
+                            progress.setVisibility(View.INVISIBLE);
                             Toast.makeText(getBaseContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -141,6 +145,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        progress.setVisibility(View.INVISIBLE);
 
         Toast.makeText(this, connectionResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
 
