@@ -121,7 +121,7 @@ public class GPSTracker extends Service implements LocationListener {
         return null;
     }
 
-    interface Loc{
+    public interface Loc{
         public void newLocation(Location newLocation);
         public void mess(String pro);
     }

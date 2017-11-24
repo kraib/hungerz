@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="@dimen/activity_horizontal_margin"
+    android:background="#5fb0c9"
     android:scrollbarAlwaysDrawVerticalTrack="true">
 
         <LinearLayout
@@ -19,7 +20,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="@color/colorPrimary"
-                android:text="@string/provide_your_username_and_password"/>
+                android:text="Log in"/>
             <include layout="@layout/item_divider"/>
 
             <android.support.design.widget.TextInputLayout

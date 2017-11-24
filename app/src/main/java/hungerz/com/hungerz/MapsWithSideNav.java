@@ -34,6 +34,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import hungerz.com.hungerz.gps.GPSTracker;
+import hungerz.com.hungerz.models.FoodInfoModel;
+
 public class MapsWithSideNav extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GPSTracker.Loc {
 
@@ -41,7 +44,7 @@ public class MapsWithSideNav extends AppCompatActivity
     GPSTracker gpsTracker;
     Location currentLocation = null;
 
-    List<HashMap<String, String>> markersList;
+    List<FoodInfoModel> markersList;
     private DatabaseReference userReference;
 
 
@@ -79,12 +82,12 @@ public class MapsWithSideNav extends AppCompatActivity
 
 
     // Adds markers to the mMap
-    private void addMyMakers(List<HashMap<String, String>> markersListData) {
+    private void addMyMakers(List<FoodInfoModel> markersListData) {
         mMap.clear();
-        for (HashMap<String, String> listData : markersListData) {
+        for (FoodInfoModel listData : markersListData) {
             MarkerOptions markerOptions = new MarkerOptions();
-            double lat = Double.parseDouble(listData.get("lat"));
-            double lng = Double.parseDouble(listData.get("long"));
+            double lat = Double.parseDouble(listData.getLatitude());
+            double lng = Double.parseDouble(listData.getLongitude());
             LatLng latLng = new LatLng(lat, lng);
             markerOptions.position(latLng);
             mMap.addMarker(markerOptions);
@@ -120,10 +123,16 @@ public class MapsWithSideNav extends AppCompatActivity
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        HashMap<String, String> mark = new HashMap<>();
-                        mark.put("lat", data.child("location").child("lat").getValue().toString());
-                        mark.put("long", data.child("location").child("long").getValue().toString());
-                        markersList.add(mark);
+                        DataSnapshot events = data.child("events");
+                        for (DataSnapshot event: events.getChildren()){
+                            FoodInfoModel model = event.getValue(FoodInfoModel.class);
+
+                            Toast.makeText(getBaseContext(), model.getFoodType(), Toast.LENGTH_SHORT).show();
+                            HashMap<String, String> mark = new HashMap<>();
+                            mark.put("lat", model.getLatitude());
+                            mark.put("long", model.getLongitude());
+                            markersList.add(model);
+                        }
                     }
                     addMyMakers(markersList);
 

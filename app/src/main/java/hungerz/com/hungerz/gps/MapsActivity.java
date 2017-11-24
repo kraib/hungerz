@@ -31,6 +31,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.w3c.dom.Text;
+
 import hungerz.com.hungerz.LoginActivity;
 import hungerz.com.hungerz.R;
 import hungerz.com.hungerz.gps.GPSTracker;
@@ -99,6 +101,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             // this is set the view from XML inside AlertDialog
             alert.setView(view);
             ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
+            TextView input_name = (TextView)view.findViewById(R.id.input_name);
             // disallow cancel of AlertDialog on click of back button and outside touch
             alert.setCancelable(false);
 
@@ -139,7 +142,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                showDialog();
+                showDialog( );
             }
         });
     }

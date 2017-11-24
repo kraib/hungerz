@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,10 +28,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import hungerz.com.hungerz.gps.GPSTracker;
+import hungerz.com.hungerz.models.FoodInfoModel;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GPSTracker.Loc, View.OnClickListener {
 
@@ -37,7 +44,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     GPSTracker gpsTracker;
     Location currentLocation = null;
 
-    List<HashMap<String, String>> markersList;
+    List<FoodInfoModel> markersList;
     private DatabaseReference userReference;
 
 
@@ -66,20 +73,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     // Adds markers to the mMap
-    private void addMyMakers(List<HashMap<String, String>> markersListData) {
+    private void addMyMakers(List<FoodInfoModel> markersListData) {
         mMap.clear();
-        for (HashMap<String, String> listData : markersListData) {
+        for (FoodInfoModel listData : markersListData) {
             MarkerOptions markerOptions = new MarkerOptions();
-            double lat = Double.parseDouble(listData.get("lat"));
-            double lng = Double.parseDouble(listData.get("long"));
+            double lat = Double.parseDouble(listData.getLatitude());
+            double lng = Double.parseDouble(listData.getLongitude());
             LatLng latLng = new LatLng(lat, lng);
             markerOptions.position(latLng);
-            mMap.addMarker(markerOptions);
+            markerOptions.title(listData.getFoodType());
+            markerOptions.snippet(listData.getFoodType());
+            mMap.addMarker(markerOptions).setTag(listData);
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
         }
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -102,19 +110,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             addMyMakers(markersList);
         }
 
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+            @Override
+            public void onInfoWindowClick(Marker arg0) {
+                FoodInfoModel model = (FoodInfoModel) arg0.getTag();
+                Toast.makeText(gpsTracker, model.getFoodType(), Toast.LENGTH_SHORT).show();
+            }
+        });
         userReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        HashMap<String, String> mark = new HashMap<>();
-                        mark.put("lat", data.child("location").child("lat").getValue().toString());
-                        mark.put("long", data.child("location").child("long").getValue().toString());
-                        markersList.add(mark);
+                        DataSnapshot events = data.child("events");
+                        for (DataSnapshot event: events.getChildren()){
+                            FoodInfoModel model = event.getValue(FoodInfoModel.class);
+
+                            Toast.makeText(getBaseContext(), model.getFoodType(), Toast.LENGTH_SHORT).show();
+                            HashMap<String, String> mark = new HashMap<>();
+                            mark.put("lat", model.getLatitude());
+                            mark.put("long", model.getLongitude());
+                            markersList.add(model);
+                        }
                     }
                     addMyMakers(markersList);
 
-                    Toast.makeText(MapsActivity.this, markersList.size()+"", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), markersList.size()+"", Toast.LENGTH_SHORT).show();
                 }
             }
 

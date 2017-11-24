@@ -23,6 +23,6 @@
         android:layout_gravity="center"
         android:textStyle="bold"
         android:layout_marginTop="20sp"
-        android:text="@string/hunger_zero_app"
+        android:text="@string/app_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 </LinearLayout>
