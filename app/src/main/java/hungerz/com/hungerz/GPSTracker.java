@@ -39,11 +39,6 @@ public class GPSTracker extends Service implements LocationListener {
     }
 
 
-
-
-
-
-
     //Create a GetLocation Method //
     public Location getLocation(){
         try{
@@ -101,7 +96,6 @@ public class GPSTracker extends Service implements LocationListener {
         return  location;
     }
 
-    // followings are the default method if we imlement LocationListener //
     public void onLocationChanged(Location locationd){
         if(locationd != null){
 
@@ -112,18 +106,15 @@ public class GPSTracker extends Service implements LocationListener {
     }
 
     public void onStatusChanged(String Provider, int status, Bundle extras){
-//        loc.mess(Provider+"  "+status);
 
     }
     public void onProviderEnabled(String Provider){
         loc.mess("on");
         loc.newLocation(getLocation());
-//        location = getLocation();
 
     }
     public void onProviderDisabled(String Provider){
         loc.mess("off");
-//        showDialog(context);
 
     }
     public IBinder onBind(Intent arg0){

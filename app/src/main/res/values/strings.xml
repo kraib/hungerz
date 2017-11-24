@@ -4,4 +4,27 @@
     <string name="title_activity_maps">Map</string>
     <string name="username">User name</string>
     <string name="password">Password</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_choice">Choose</string>
+    <string name="web_client_id2">225218425486-lgng3bdqepi7bibvv7ued6eunkvvlngg</string>
+
+
+    <string name="web_client_id">AIzaSyAGuvLtlrU3zVuCeTUc8U-J3nIpWrtXUVo</string>
+
+    <string name="foodDescribe">Which type of food are you giving out</string>
+    <string name="numberSupport">How many people can eat eat the food</string>
+    <string name="time">Whats the time limit for picking the food</string>
+    <string name="terms">Do you wish to serve it out or send it to our support team to help distribute it</string>
+    <string name="title_activity_main_drawer">MainDrawer</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_maps_with_side_nav">MapsWithSideNav</string>
+
+
 </resources>
